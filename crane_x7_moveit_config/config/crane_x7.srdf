@@ -26,7 +26,7 @@
         <joint name="crane_x7_shoulder_revolute_part_tilt_joint" value="0" />
         <joint name="crane_x7_upper_arm_revolute_part_rotate_joint" value="0" />
         <joint name="crane_x7_upper_arm_revolute_part_twist_joint" value="0" />
-        <joint name="crane_x7_wrist_joint" value="0" />
+        <joint name="crane_x7_wrist_joint" value="1.571" />
     </group_state>
     <group_state name="home" group="arm">
         <joint name="crane_x7_lower_arm_fixed_part_joint" value="0.0563" />

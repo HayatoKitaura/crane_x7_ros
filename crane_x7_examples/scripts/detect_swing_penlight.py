@@ -10,14 +10,14 @@ import rosnode
 from tf.transformations import quaternion_from_euler
 from darknet_ros_msgs.msg import BoundingBox
 
-detect_x = 0
-detect_y = 0
+# detect_x = 0
+# detect_y = 0
 
-def get_BBox(darknet_bbox):
-    local_x = darknet_bbox.xmax - darknet_bbox.xmin
-    local_y = darknet_bbox.ymax - darknet_bbox.ymin
-    print("x:",local_x)
-    print("y:",local_y)
+# def get_BBox(darknet_bbox):
+#     local_x = darknet_bbox.xmax - darknet_bbox.xmin
+#     local_y = darknet_bbox.ymax - darknet_bbox.ymin
+#     print("x:",local_x)
+#     print("y:",local_y)
 
 
 def main():
@@ -71,8 +71,8 @@ def main():
     arm.set_named_target("search")
     arm.go()
     time.sleep(3.0)
-    print("sub")
-    rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBox, get_BBox)
+    # print("sub")
+    # rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBox, get_BBox)
 
     # ハンドを開く
     gripper.set_joint_value_target([0.7, 0.7])
@@ -92,7 +92,7 @@ def main():
     arm.go()  # 実行
 
     # ハンドを閉じる
-    gripper.set_joint_value_target([0.05, 0.05])
+    gripper.set_joint_value_target([0.01, 0.01])
     gripper.go()
 
     # 持ち上げる
@@ -111,8 +111,7 @@ def main():
     arm.set_named_target("vertical")
     arm.go()
 
-    data = [["a",0,90],["a",1,40],["a",5,30],["a",1,-40],["a",5,1],["a",1,40],["a",5,30],["a",1,-40],["a",5,1],["a",1,1]]
-
+    data = [["a",0,1],["a",1,40],["a",5,30],["a",1,-40],["a",5,1],["a",1,40],["a",5,30],["a",1,-40],["a",5,1],["a",1,1],["a",0,90],["a",1,20],["a",3,-60],["a",5,-30],["a",3,1],["a",5,1],["a",3,-60],["a",5,-30],["a",3,1],["a",5,1]]
     for i in range(len(data)):
         data[i][0],data[i][1],data[i][2]
         part=data[i][0]
