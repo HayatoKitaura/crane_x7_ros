@@ -50,6 +50,10 @@ roslaunch crane_x7_gazebo crane_x7_with_table.launch
 
 Following examples will be executable after launch CRANE-X7 base packages.
 
+### swing_penlight.py
+
+this is an example to swing object
+
 ### gripper_action_example.py
 
 This is an example to open/close the gripper.

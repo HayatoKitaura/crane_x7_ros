@@ -4,6 +4,8 @@ CRANE-X7のためのパッケージ、 `crane_x7` で用いるサンプルをま
 
 ## システムの起動方法
 
+
+
 CRANE-X7の制御信号ケーブルを制御用パソコンへ接続します。
 Terminalを開き、`crane_x7_bringup`の`demo.launch`を起動します。
 このlaunchファイルには次のオプションが用意されています。
@@ -14,6 +16,7 @@ Terminalを開き、`crane_x7_bringup`の`demo.launch`を起動します。
 
 ### シミュレータを使う場合
 
+
 実機無しで動作を確認する場合、
 制御信号ケーブルを接続しない状態で次のコマンドを実行します。
 
@@ -22,6 +25,7 @@ roslaunch crane_x7_bringup demo.launch fake_execution:=true
 ```
 
 ### 実機を使う場合
+
 
 実機で動作を確認する場合、
 制御信号ケーブルを接続した状態で次のコマンドを実行します。
@@ -45,10 +49,28 @@ roslaunch crane_x7_bringup demo.launch fake_execution:=false port:=/dev/ttyUSB1
 roslaunch crane_x7_gazebo crane_x7_with_table.launch
 ```
 
+
 ## サンプルの実行方法
+
+
 
 `demo.launch`を実行している状態で各サンプルを実行することができます。
 
+### swing_penlight.pyの実行
+
+物体（今回はペンライト）を振るコード例です。
+この動作は実機、Gazebo上で動作可能です。
+
+次のコマンドで物体を掴み振るモーションを再生できます。
+
+crane_examples/scriptsへ移動
+```
+cd catkin_ws/src/crane_x7_ros/crane_x7_examples/scripts
+```
+実行
+```
+rosrun crane_x7_examples swing_penlight.py
+```
 
 ### gripper_action_example.pyの実行
 
@@ -60,6 +82,7 @@ roslaunch crane_x7_gazebo crane_x7_with_table.launch
 ```sh
 rosrun crane_x7_examples gripper_action_example.py
 ```
+
 
 ![gripper_action_example](https://github.com/rt-net/crane_x7_ros/blob/images/images/gazebo_gripper_example.gif)
 
