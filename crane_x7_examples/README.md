@@ -92,7 +92,7 @@ csvファイルから各部位の角度を読み込み、順に実行します�
 
 csvファイルの記入方法はset_angle.pyの記入方法と同じです。
 
-![swing_object]()
+![swing_object](https://github.com/HayatoKitaura/crane_x7_ros/blob/master/crane_x7_examples/demo.gif)
 
 ### gripper_action_example.pyの実行
 
