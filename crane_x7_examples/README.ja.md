@@ -59,7 +59,9 @@ roslaunch crane_x7_gazebo crane_x7_with_table.launch
 ### swing_object.pyの実行
 
 物体（今回はペンライト）を振るコード例です。
+
 この動作は実機、Gazebo上で動作可能です。
+
 モーションは[set_angle.py](https://github.com/ryuichiueda/crane_x7_ros/blob/master/crane_x7_examples/scripts/)で各部位の角度を設計し、csvファイルに記入します。
 
 次のコマンドで物体を掴み振るモーションを再生できます。
