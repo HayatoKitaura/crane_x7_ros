@@ -64,7 +64,7 @@ def main():
     target_pose = geometry_msgs.msg.Pose()
     target_pose.position.x = 0.2
     target_pose.position.y = 0.0
-    target_pose.position.z = 0.08
+    target_pose.position.z = 0.1
     q = quaternion_from_euler(-3.14, 0.0, -3.14/2.0)  # 上方から掴みに行く場合
     target_pose.orientation.x = q[0]
     target_pose.orientation.y = q[1]
@@ -74,7 +74,7 @@ def main():
     arm.go()  # 実行
 
     # ハンドを閉じる
-    gripper.set_joint_value_target([0.05, 0.05]) #掴むobjectによって変更する、デフォルトは発表で使用したペンライト
+    gripper.set_joint_value_target([0.4, 0.4]) #掴むobjectによって変更する
     gripper.go()
 
     # 持ち上げる
