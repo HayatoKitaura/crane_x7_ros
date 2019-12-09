@@ -11,7 +11,7 @@ import rosnode
 from tf.transformations import quaternion_from_euler
 
 def main():
-    rospy.init_node("crane_x7_detect_and_swing_penlight")
+    rospy.init_node("swing_object")
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
     arm.set_max_velocity_scaling_factor(0.3)
@@ -93,7 +93,7 @@ def main():
     arm.set_named_target("vertical")
     arm.go()
 
-    with open('swing_penlight.csv') as f:   #csvファイルを読み込む
+    with open('swing_object.csv') as f:   #csvファイルを読み込む
         reader = csv.reader(f)#, quoting=csv.QUOTE_NONNUMERIC)
         data = [row for row in reader]
 
