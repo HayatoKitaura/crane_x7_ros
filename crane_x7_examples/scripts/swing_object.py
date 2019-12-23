@@ -93,27 +93,32 @@ def main():
     arm.set_named_target("vertical")
     arm.go()
 
-    with open('swing_object.csv') as f:   #csvファイルを読み込む
-        reader = csv.reader(f)#, quoting=csv.QUOTE_NONNUMERIC)
-        data = [row for row in reader]
+    # with open('swing_object.csv') as f:   #csvファイルを読み込む
+    #     reader = csv.reader(f)#, quoting=csv.QUOTE_NONNUMERIC)
+    #     data = [row for row in reader]
 
-    for i in range(len(data)):
-        data[i][0],data[i][1],data[i][2]
-        part=data[i][0]
-        joint=int(data[i][1])
-        angle = float(data[i][2])/180.0*math.pi
+    data = [[["a",1,20]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,30]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,30]]]
 
-        print(part, joint, angle)
-        if part == "a":
-            arm_joint_values = arm.get_current_joint_values()
-            arm_joint_values[joint] = angle
-            arm.set_joint_value_target(arm_joint_values)
-            arm.go()
-        elif part == "g":
-            gripper_joint_values = gripper.get_current_joint_values()
-            gripper_joint_values[joint] = angle
-            gripper.set_joint_value_target(gripper_joint_values)
-            gripper.go()
+    arm_joint_values = arm.get_current_joint_values()
+    for flame in range(len(data)):
+        for joint_data in range(len(data[flame])):
+            part=data[flame][joint_data][0]
+            joint=int(data[flame][joint_data][1])
+            angle = float(data[flame][joint_data][2])/180.0*math.pi
+
+            print(part, joint, angle)
+            if part == "a":
+                # arm_joint_values = arm.get_current_joint_values()
+                arm_joint_values[joint] = angle
+            # elif part == "g":
+            #     gripper_joint_values = gripper.get_current_joint_values()
+            #     gripper_joint_values[joint] = angle
+            #     gripper.set_joint_value_target(gripper_joint_values)
+        print("flame")
+        print(arm_joint_values)
+        arm.set_joint_value_target(arm_joint_values)
+        arm.go()
+        # gripper.go()
     print("done")
 
 if __name__ == '__main__':
