@@ -14,7 +14,7 @@ def main():
     rospy.init_node("swing_object")
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
-    arm.set_max_velocity_scaling_factor(0.3)
+    arm.set_max_velocity_scaling_factor(0.9)
     gripper = moveit_commander.MoveGroupCommander("gripper")
 
     while len([s for s in rosnode.get_node_names() if 'rviz' in s]) == 0:
@@ -97,7 +97,7 @@ def main():
     #     reader = csv.reader(f)#, quoting=csv.QUOTE_NONNUMERIC)
     #     data = [row for row in reader]
 
-    data = [[["a",1,20]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]]]#縦フリ
+    data = [[["a",1,20,0.3]],[["a",2,20,0.3]],[["a",3,-60,0.9],["a",5,0,0.9]],[["a",3,1,0.3],["a",5,30,0.3]],[["a",3,-60,0.9],["a",5,-30,0.9]],[["a",3,1,0.3],["a",5,30,0.3]]]
 
     arm_joint_values = arm.get_current_joint_values()
     for flame in range(len(data)):
@@ -105,8 +105,9 @@ def main():
             part=data[flame][joint_data][0]
             joint=int(data[flame][joint_data][1])
             angle = float(data[flame][joint_data][2])/180.0*math.pi
+            speed =float(data[flame][joint_data][3])
 
-            print(part, joint, angle)
+            print(part, joint, angle, speed)
             if part == "a":
                 # arm_joint_values = arm.get_current_joint_values()
                 arm_joint_values[joint] = angle
@@ -117,6 +118,7 @@ def main():
         print("flame")
         print(arm_joint_values)
         arm.set_joint_value_target(arm_joint_values)
+        arm.set_max_velocity_scaling_factor(speed)
         arm.go()
         # gripper.go()
     print("done")

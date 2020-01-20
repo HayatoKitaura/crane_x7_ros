@@ -44,9 +44,10 @@ def main():
 
 
     # 掴む準備をする
+    while()
     target_pose = geometry_msgs.msg.Pose()
-    target_pose.position.x = 0.2
-    target_pose.position.y = 0.0
+    target_pose.position.x = t_x
+    target_pose.position.y = t_y
     target_pose.position.z = 0.3
     q = quaternion_from_euler(-3.14, 0.0, -3.14/2.0)  # 上方から掴みに行く場合
     target_pose.orientation.x = q[0]
@@ -62,8 +63,8 @@ def main():
 
     # 掴みに行く
     target_pose = geometry_msgs.msg.Pose()
-    target_pose.position.x = 0.2
-    target_pose.position.y = 0.0
+    target_pose.position.x = t_x
+    target_pose.position.y = t_y
     target_pose.position.z = 0.1
     q = quaternion_from_euler(-3.14, 0.0, -3.14/2.0)  # 上方から掴みに行く場合
     target_pose.orientation.x = q[0]
