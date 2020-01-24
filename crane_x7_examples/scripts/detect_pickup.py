@@ -9,6 +9,18 @@ import moveit_commander
 import geometry_msgs.msg
 import rosnode
 from tf.transformations import quaternion_from_euler
+from darknet_ros_msgs.msg import BoundingBoxes, BoundingBoxes
+from crane_x7_examples.srv import bbox_pos, bbox_posResponse
+
+
+def DarknetBboxCallback(self, darknet_bbox):
+    bboxs = darknet_bboxs.bounding_box
+    person_bbox = BoundingBox()
+    if len(bboxs) != 0 :
+        for i, bb in enumerate(bboxs) :
+            if bboxs[i].Class == 'person' and bboxs[i].probability >= self.m_pub_threshold:
+                person_bbox = bboxs[i]
+    self.person_bbox = person_bbox
 
 def main():
     rospy.init_node("swing_object")
@@ -27,35 +39,57 @@ def main():
     print("Current state:")
     print(robot.get_current_state())
 
-    # アーム初期ポーズを表示
     arm_initial_pose = arm.get_current_pose().pose
     print("Arm initial pose:")
     print(arm_initial_pose)
 
-    # 何かを掴んでいた時のためにハンドを開く
     gripper.set_joint_value_target([0.9, 0.9])
     gripper.go()
 
-    # SRDFに定義されている"home"の姿勢にする
     arm.set_named_target("home")
     arm.go()
     gripper.set_joint_value_target([0.7, 0.7])
     gripper.go()
 
+    arm.set_named_target("search")
+    arm.go()
 
     # 掴む準備をする
-    while()
-    target_pose = geometry_msgs.msg.Pose()
-    target_pose.position.x = t_x
-    target_pose.position.y = t_y
-    target_pose.position.z = 0.3
-    q = quaternion_from_euler(-3.14, 0.0, -3.14/2.0)  # 上方から掴みに行く場合
-    target_pose.orientation.x = q[0]
-    target_pose.orientation.y = q[1]
-    target_pose.orientation.z = q[2]
-    target_pose.orientation.w = q[3]
-    arm.set_pose_target(target_pose)  # 目標ポーズ設定
-    arm.go()  # 実行
+
+    range_x_min = 290
+    range_x_max = 350
+    range_y_min = 210
+    range_y_max = 270
+
+
+    while True:
+        rospy.wait_for_service('bbox_service')
+        try:
+            b_s = rospy.ServiceProxy('bbox_service', bbox_pos)
+            resp = b_s(True)
+            print(resp)
+            pos_x = resp.x_center
+            pos_y = resp.y_center
+
+        except rospy.ServiceException, e:
+            print "Service call failed: %s"%e
+
+        if(pos_x < range_x_min or range_y_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
+            break
+
+
+        target_pose = geometry_msgs.msg.Pose()
+        target_pose.position.x = t_x
+        target_pose.position.y = t_y
+        target_pose.position.z = 0.3
+        q = quaternion_from_euler(-3.14, 0.0, -3.14/2.0)  # 上方から掴みに行く場合
+        target_pose.orientation.x = q[0]
+        target_pose.orientation.y = q[1]
+        target_pose.orientation.z = q[2]
+        target_pose.orientation.w = q[3]
+        arm.set_pose_target(target_pose)  # 目標ポーズ設定
+        arm.go()  # 実行
+
 
     # ハンドを開く
     gripper.set_joint_value_target([0.7, 0.7])
