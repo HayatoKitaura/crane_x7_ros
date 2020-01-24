@@ -75,7 +75,7 @@ def main():
             print "Service call failed: %s"%e
 
         if(pos_x < range_x_min or range_y_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
-            break
+            
 
 
         target_pose = geometry_msgs.msg.Pose()
