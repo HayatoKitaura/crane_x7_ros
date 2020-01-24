@@ -12,18 +12,8 @@ from tf.transformations import quaternion_from_euler
 from darknet_ros_msgs.msg import BoundingBoxes, BoundingBoxes
 from crane_x7_examples.srv import bbox_pos, bbox_posResponse
 
-
-def DarknetBboxCallback(self, darknet_bbox):
-    bboxs = darknet_bboxs.bounding_box
-    person_bbox = BoundingBox()
-    if len(bboxs) != 0 :
-        for i, bb in enumerate(bboxs) :
-            if bboxs[i].Class == 'person' and bboxs[i].probability >= self.m_pub_threshold:
-                person_bbox = bboxs[i]
-    self.person_bbox = person_bbox
-
 def main():
-    rospy.init_node("swing_object")
+    rospy.init_node("google_assistant_robot")
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
     arm.set_max_velocity_scaling_factor(0.3)
@@ -46,37 +36,47 @@ def main():
     gripper.set_joint_value_target([0.9, 0.9])
     gripper.go()
 
-    arm.set_named_target("home")
-    arm.go()
-    gripper.set_joint_value_target([0.7, 0.7])
-    gripper.go()
-
+#探索
     arm.set_named_target("search")
     arm.go()
 
-    # 掴む準備をする
+    #ハンドのデカルト座標
+    t_x = 0.25
+    t_y = 0
 
+    #画像座標系の物体の中心座標
+    pos_x = 0
+    pos_y = 0
+
+    #画像座標上での中心範囲
     range_x_min = 290
     range_x_max = 350
     range_y_min = 210
     range_y_max = 270
 
 
-    while True:
+    while(pos_x < range_x_min or range_x_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
+
+        # if(range_x_min < pos_x and pos_x < range_x_max and range_y_min < pos_y and pos_y < range_y_max): break
+
         rospy.wait_for_service('bbox_service')
         try:
             b_s = rospy.ServiceProxy('bbox_service', bbox_pos)
             resp = b_s(True)
             print(resp)
+            print("------------")
+            print("x:", t_x)
+            print("y:", t_y)
+            print("------------")
             pos_x = resp.x_center
             pos_y = resp.y_center
-
         except rospy.ServiceException, e:
             print "Service call failed: %s"%e
 
-        if(pos_x < range_x_min or range_y_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
-            
-
+        if(pos_x < range_x_min): t_y -= 0.01
+        if(pos_x > range_x_max): t_y += 0.01
+        if(pos_y < range_y_min): t_x -= 0.01
+        if(pos_y > range_y_max): t_x += 0.01
 
         target_pose = geometry_msgs.msg.Pose()
         target_pose.position.x = t_x
@@ -89,11 +89,7 @@ def main():
         target_pose.orientation.w = q[3]
         arm.set_pose_target(target_pose)  # 目標ポーズ設定
         arm.go()  # 実行
-
-
-    # ハンドを開く
-    gripper.set_joint_value_target([0.7, 0.7])
-    gripper.go()
+        # time.sleep(3)
 
     # 掴みに行く
     target_pose = geometry_msgs.msg.Pose()
@@ -109,7 +105,7 @@ def main():
     arm.go()  # 実行
 
     # ハンドを閉じる
-    gripper.set_joint_value_target([0.4, 0.4]) #掴むobjectによって変更する
+    gripper.set_joint_value_target([0.1, 0.1]) #掴むobjectによって変更する
     gripper.go()
 
     # 持ち上げる

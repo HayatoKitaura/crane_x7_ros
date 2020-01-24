@@ -42,6 +42,8 @@ def main():
     gripper.set_joint_value_target([0.7, 0.7])
     gripper.go()
 
+    arm.set_named_target("search")
+    arm.go()
 
     # 掴む準備をする
     target_pose = geometry_msgs.msg.Pose()
