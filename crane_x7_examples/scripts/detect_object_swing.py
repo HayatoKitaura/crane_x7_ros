@@ -8,6 +8,7 @@ import rospy
 import moveit_commander
 import geometry_msgs.msg
 import rosnode
+from std_msgs.msg import String
 from tf.transformations import quaternion_from_euler
 from darknet_ros_msgs.msg import BoundingBoxes, BoundingBoxes
 from crane_x7_examples.srv import bbox_pos, bbox_posResponse
@@ -49,10 +50,14 @@ def main():
     pos_y = 0
 
     #画像座標上での中心範囲
-    range_x_min = 290
-    range_x_max = 350
-    range_y_min = 210
-    range_y_max = 270
+    # range_x_min = 300
+    # range_x_max = 340
+    # range_y_min = 220
+    # range_y_max = 260
+    range_x_min = 370
+    range_x_max = 390
+    range_y_min = 340
+    range_y_max = 360
 
 
     while(pos_x < range_x_min or range_x_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
@@ -89,7 +94,7 @@ def main():
         target_pose.orientation.w = q[3]
         arm.set_pose_target(target_pose)  # 目標ポーズ設定
         arm.go()  # 実行
-        # time.sleep(3)
+        time.sleep(2)
 
     # 掴みに行く
     target_pose = geometry_msgs.msg.Pose()
@@ -105,7 +110,7 @@ def main():
     arm.go()  # 実行
 
     # ハンドを閉じる
-    gripper.set_joint_value_target([0.1, 0.1]) #掴むobjectによって変更する
+    gripper.set_joint_value_target([0.01, 0.01]) #掴むobjectによって変更する
     gripper.go()
 
     # 持ち上げる
@@ -124,33 +129,54 @@ def main():
     arm.set_named_target("vertical")
     arm.go()
 
+    data = [ [[1,20]] , [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]], [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]] ]
+
+    num = 0
+    arm_joint_values = arm.get_current_joint_values()
+    for flame in range(len(data)):
+        for joint_data in range(len(data[flame])):
+            joint=int(data[flame][joint_data][0])
+            angle = float(data[flame][joint_data][1])/180.0*math.pi
+            print(joint, angle)
+            arm_joint_values[joint] = angle
+
+        num += 1
+        print(num)
+
+        if num %2==0: speed=0.3
+        else: speed=0.9
+
+        print("flame")
+        print(speed)
+        print(arm_joint_values)
+        arm.set_max_velocity_scaling_factor(speed)
+        arm.set_joint_value_target(arm_joint_values)
+        arm.go()
+
+    print("done")
     # with open('swing_object.csv') as f:   #csvファイルを読み込む
     #     reader = csv.reader(f)#, quoting=csv.QUOTE_NONNUMERIC)
     #     data = [row for row in reader]
 
-    data = [[["a",1,20]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]]]#縦フリ
+    # data = [[["a",1,20]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]]]#縦フリ
 
-    arm_joint_values = arm.get_current_joint_values()
-    for flame in range(len(data)):
-        for joint_data in range(len(data[flame])):
-            part=data[flame][joint_data][0]
-            joint=int(data[flame][joint_data][1])
-            angle = float(data[flame][joint_data][2])/180.0*math.pi
+    # arm_joint_values = arm.get_current_joint_values()
+    # for flame in range(len(data)):
+    #     for joint_data in range(len(data[flame])):
+    #         part=data[flame][joint_data][0]
+    #         joint=int(data[flame][joint_data][1])
+    #         angle = float(data[flame][joint_data][2])/180.0*math.pi
 
-            print(part, joint, angle)
-            if part == "a":
-                # arm_joint_values = arm.get_current_joint_values()
-                arm_joint_values[joint] = angle
-            # elif part == "g":
-            #     gripper_joint_values = gripper.get_current_joint_values()
-            #     gripper_joint_values[joint] = angle
-            #     gripper.set_joint_value_target(gripper_joint_values)
-        print("flame")
-        print(arm_joint_values)
-        arm.set_joint_value_target(arm_joint_values)
-        arm.go()
-        # gripper.go()
-    print("done")
+    #         print(part, joint, angle)
+    #         if part == "a":
+    #             arm_joint_values[joint] = angle
+    #     print("flame")
+    #     print(arm_joint_values)
+    #     arm.set_joint_value_target(arm_joint_values)
+    #     arm.go()
+    # print("done")
+    arm.set_named_target("home")
+    arm.go()
 
 if __name__ == '__main__':
 

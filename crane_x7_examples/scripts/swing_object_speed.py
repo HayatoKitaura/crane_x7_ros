@@ -99,34 +99,22 @@ def main():
     #     data = [row for row in reader]
 
     # data = [[["a",1,20]],[["a",1,1],["a",3,-60],["a",5,-30]],[["a",1,50],["a",3,1],["a",5,30]],[["a",1,1],["a",3,-60],["a",5,-30]],[["a",1,50],["a",3,1],["a",5,30]]]
-    data = [[["a",1,20]],[["a",1,10],["a",3,-60],["a",5,-30]],[["a",1,30],["a",3,1],["a",5,30]],[["a",1,10],["a",3,-60],["a",5,-30]],[["a",1,30],["a",3,1],["a",5,30]]]
+    data = [ [[1,20]] , [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]], [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]] ]
 
     arm_joint_values = arm.get_current_joint_values()
     for flame in range(len(data)):
         for joint_data in range(len(data[flame])):
-            part=data[flame][joint_data][0]
-            joint=int(data[flame][joint_data][1])
-            angle = float(data[flame][joint_data][2])/180.0*math.pi
-            
+            joint=int(data[flame][joint_data][0])
+            angle = float(data[flame][joint_data][1])/180.0*math.pi
             print(part, joint, angle )
-            
-            
             print(num)
-            if part == "a":
-                # arm_joint_values = arm.get_current_joint_values()
-                arm_joint_values[joint] = angle
-            # elif part == "g":
-            #     gripper_joint_values = gripper.get_current_joint_values()
-            #     gripper_joint_values[joint] = angle
-            #     gripper.set_joint_value_target(gripper_joint_values)
+            arm_joint_values[joint] = angle
+
         num += 1
         print(num)
 
-        if num %2==0: 
-            speed=0.9
-
-        else:  
-            speed=0.3
+        if num %2==0: speed=0.9
+        else: speed=0.3
 
         print("flame")
         print(speed)
@@ -134,7 +122,6 @@ def main():
         arm.set_max_velocity_scaling_factor(speed)
         arm.set_joint_value_target(arm_joint_values)
         arm.go()
-        
 
         # gripper.go()
     print("done")
