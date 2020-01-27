@@ -55,8 +55,8 @@ def detect_swing_object():
     # range_y_max = 260
     range_x_min = 380
     range_x_max = 400
-    range_y_min = 330
-    range_y_max = 350
+    range_y_min = 310
+    range_y_max = 330
 
 
     while(pos_x < range_x_min or range_x_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
