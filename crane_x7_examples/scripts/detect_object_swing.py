@@ -8,21 +8,20 @@ import rospy
 import moveit_commander
 import geometry_msgs.msg
 import rosnode
-from std_msgs.msg import String
 from tf.transformations import quaternion_from_euler
 from darknet_ros_msgs.msg import BoundingBoxes, BoundingBoxes
+from crane_x7_examples.srv import call_dso, call_dsoResponse
 from crane_x7_examples.srv import bbox_pos, bbox_posResponse
 
-def main():
-    rospy.init_node("google_assistant_robot")
+def detect_swing_object():
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
     arm.set_max_velocity_scaling_factor(0.3)
     gripper = moveit_commander.MoveGroupCommander("gripper")
 
-    while len([s for s in rosnode.get_node_names() if 'rviz' in s]) == 0:
-        rospy.sleep(1.0)
-    rospy.sleep(1.0)
+    # while len([s for s in rosnode.get_node_names() if 'rviz' in s]) == 0:
+    #     rospy.sleep(1.0)
+    # rospy.sleep(1.0)
 
     print("Group names:")
     print(robot.get_group_names())
@@ -54,10 +53,10 @@ def main():
     # range_x_max = 340
     # range_y_min = 220
     # range_y_max = 260
-    range_x_min = 370
-    range_x_max = 390
-    range_y_min = 340
-    range_y_max = 360
+    range_x_min = 380
+    range_x_max = 400
+    range_y_min = 330
+    range_y_max = 350
 
 
     while(pos_x < range_x_min or range_x_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
@@ -154,34 +153,24 @@ def main():
         arm.go()
 
     print("done")
-    # with open('swing_object.csv') as f:   #csvファイルを読み込む
-    #     reader = csv.reader(f)#, quoting=csv.QUOTE_NONNUMERIC)
-    #     data = [row for row in reader]
-
-    # data = [[["a",1,20]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]],[["a",3,-60],["a",5,-30]],[["a",3,1],["a",5,10]]]#縦フリ
-
-    # arm_joint_values = arm.get_current_joint_values()
-    # for flame in range(len(data)):
-    #     for joint_data in range(len(data[flame])):
-    #         part=data[flame][joint_data][0]
-    #         joint=int(data[flame][joint_data][1])
-    #         angle = float(data[flame][joint_data][2])/180.0*math.pi
-
-    #         print(part, joint, angle)
-    #         if part == "a":
-    #             arm_joint_values[joint] = angle
-    #     print("flame")
-    #     print(arm_joint_values)
-    #     arm.set_joint_value_target(arm_joint_values)
-    #     arm.go()
-    # print("done")
     arm.set_named_target("home")
     arm.go()
+
+def main(String):
+    if String.data == True:
+        detect_swing_object()
+        resp = call_dsoResponse()
+        resp.back = True
+        time.sleep(100)
+        return resp
 
 if __name__ == '__main__':
 
     try:
         if not rospy.is_shutdown():
-            main()
+            rospy.init_node("google_assistant_robot", anonymous=True)
+            print('waiting')
+            rospy.Service('detect_swing_object', call_dso, main)
+            rospy.spin()
     except rospy.ROSInterruptException:
         pass
