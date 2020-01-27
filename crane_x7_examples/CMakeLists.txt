@@ -8,6 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
+add_service_files(FILES call_dso.srv)
+add_service_files(FILES bbox_pos.srv)
 add_service_files(FILES ObstacleAvoidance.srv)
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 

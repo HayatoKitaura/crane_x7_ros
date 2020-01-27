@@ -1,0 +1,6 @@
+#request contents
+bool data
+---
+#response contents
+int16 x_center
+int16 y_center
