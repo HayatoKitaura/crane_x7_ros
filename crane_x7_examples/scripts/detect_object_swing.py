@@ -128,7 +128,7 @@ def detect_swing_object():
     arm.set_named_target("vertical")
     arm.go()
 
-    data = [ [[1,20]] , [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]], [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]] ]
+    data = [ [[1,20]] , [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]], [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]], [[1,10],[3,-60],[5,-30]], [[1,30],[3,1],[5,30]] ]
 
     num = 0
     arm_joint_values = arm.get_current_joint_values()
@@ -161,7 +161,7 @@ def main(String):
         detect_swing_object()
         resp = call_dsoResponse()
         resp.back = True
-        time.sleep(100)
+        # time.sleep(100)
         return resp
 
 if __name__ == '__main__':
