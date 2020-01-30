@@ -55,8 +55,8 @@ def detect_swing_object():
     # range_y_max = 260
     range_x_min = 380
     range_x_max = 400
-    range_y_min = 310
-    range_y_max = 330
+    range_y_min = 280
+    range_y_max = 300
 
 
     while(pos_x < range_x_min or range_x_max < pos_x or pos_y < range_y_min or range_y_max < pos_y):
@@ -93,7 +93,7 @@ def detect_swing_object():
         target_pose.orientation.w = q[3]
         arm.set_pose_target(target_pose)  # 目標ポーズ設定
         arm.go()  # 実行
-        time.sleep(2)
+        time.sleep(2.0)
 
     # 掴みに行く
     target_pose = geometry_msgs.msg.Pose()
