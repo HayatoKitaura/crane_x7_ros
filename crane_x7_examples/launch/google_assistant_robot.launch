@@ -3,8 +3,6 @@
 <launch>
   <node name="detect_object_swing" pkg="crane_x7_examples" type="detect_object_swing.py" />
   <node name="bbox_pos_server" pkg="crane_x7_examples" type="bbox_pos_server.py" />
-  <node name="voice_recognition" pkg="google_assistant" type="voice_recognition.py" />
-  <node name="publish" pkg="google_assistant" type="publish.py" />
 
 
   <!-- Console launch prefix -->

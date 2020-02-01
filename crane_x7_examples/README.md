@@ -56,30 +56,29 @@ roslaunch crane_x7_gazebo crane_x7_with_table.launch
 
 `demo.launch`を実行している状態で各サンプルを実行することができます。
 
-### swing_object.pyの実行
+### google_assistant_robot.pyの実行
 
-物体（今回はペンライト）を振るコード例です。
+GoogleAssistantを使用し音声認識、RealSenseD435を使用し物体認識、物体を掴み振るコードです。
 
-この動作は実機、Gazebo上で動作可能です。
+この動作は実機、Gazebo上で動作不可能です（RealSense関係以外は可能）
 
-モーションは[set_angle.py](https://github.com/ryuichiueda/crane_x7_ros/blob/master/crane_x7_examples/scripts/)で各部位の角度を設計し、csvファイルに記入します。
+モーションは[set_angle.py](https://github.com/ryuichiueda/crane_x7_ros/blob/master/crane_x7_examples/scripts/)で各部位の角度を設計し、関節の位置と回転角度を指定します。
 
-次のコマンドで物体を掴み振るモーションを再生できます。
+#### 実行コマンド
 
-・crane_examples/scriptsへ移動
+・RealSenseD435を起動
 ```
-cd catkin_ws/src/crane_x7_ros/crane_x7_examples/scripts
+roslaunch realsense2_camera rs_camera.launch
+ ```
+・darknet_rosを起動
 ```
-・ファイルだけ持ってきたい場合
+roslaunch darknet_ros detect_penlight.launch
 ```
-#ファイルをダウンロード
-wget https://raw.githubusercontent.com/HayatoKitaura/crane_x7_ros/master/crane_x7_examples/scripts/swing_object.py
-
-wget https://raw.githubusercontent.com/HayatoKitaura/crane_x7_ros/master/crane_x7_examples/scripts/swing_object.csv
-
-#ファイルに実行権限を与える
-chmod 764 swing_object.py
+・CraneX7を起動
 ```
+roslaunch crane_x7_examples google_assistant_robot.launch
+```
+・
 
 ・実行
 ```
