@@ -7,8 +7,8 @@ from crane_x7_examples.srv import bbox_pos, bbox_posResponse
 
 class BBoxCenterServer():
     def __init__(self):
-        rospy.init_node('bbox_server', anonymous=True)
-        rospy.Service('bbox_service', bbox_pos, self.Callback_srv)
+        rospy.init_node('bbox_pos_server', anonymous=True)
+        rospy.Service('bbox_pos_service', bbox_pos, self.Callback_srv)
         self.x = 0
         self.y = 0
 

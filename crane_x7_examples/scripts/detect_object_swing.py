@@ -13,7 +13,7 @@ from darknet_ros_msgs.msg import BoundingBoxes, BoundingBoxes
 from crane_x7_examples.srv import call_dso, call_dsoResponse
 from crane_x7_examples.srv import bbox_pos, bbox_posResponse
 
-def detect_swing_object():
+def detect_object_swing():
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
     arm.set_max_velocity_scaling_factor(0.3)
@@ -158,19 +158,18 @@ def detect_swing_object():
 
 def main(String):
     if String.data == True:
-        detect_swing_object()
+        detect_object_swing()
         resp = call_dsoResponse()
         resp.back = True
-        # time.sleep(100)
         return resp
 
 if __name__ == '__main__':
 
     try:
         if not rospy.is_shutdown():
-            rospy.init_node("google_assistant_robot", anonymous=True)
+            rospy.init_node("detect_object_swing", anonymous=True)
             print('waiting')
-            rospy.Service('detect_swing_object', call_dso, main)
+            rospy.Service('detect_object_swing_service', call_dso, main)
             rospy.spin()
     except rospy.ROSInterruptException:
         pass
