@@ -60,37 +60,74 @@ roslaunch crane_x7_gazebo crane_x7_with_table.launch
 
 GoogleAssistantを使用し音声認識、RealSenseD435を使用し物体認識、物体を掴み振るコードです。
 
+今回はデモとしてペンライトを使用しました。
+
 この動作は実機、Gazebo上で動作不可能です（RealSense関係以外は可能）
 
 モーションは[set_angle.py](https://github.com/ryuichiueda/crane_x7_ros/blob/master/crane_x7_examples/scripts/)で各部位の角度を設計し、関節の位置と回転角度を指定します。
 
-#### 実行コマンド
 
-・RealSenseD435を起動
+[スライド・期末発表](https://docs.google.com/presentation/d/1nHuU0X9NXfnAbDoUjV0XEDaFVCdB3_XfKulnwhmLkig/edit?usp=sharing)
+[スライド・結果報告](https://onedrive.live.com/view.aspx?resid=814F23BD7044D0DC!473&ithint=file%2cpptx&authkey=!ALmIcA6SCFlU8P0)
+
+#### 環境構築
++ crane_x7_rosをインストール
+```
+git clone https://github.com/HayatoKitaura/crane_x7_ros.git
+```
++ realsense-rosをインストール
+```
+git clone https://github.com/IntelRealSense/realsense-ros.git
+ ```
++ darknet_rosをインストール
+```
+git clone https://github.com/HayatoKitaura/darknet_ros.git
+```
++ ペンライトを学習した重みをダウンロード
+```oo
+https://drive.google.com/file/d/1wX5fMArZlW0T0s1JZhx2QuuGTuoWYt5P/view?usp=sharing
+```
++ google_assistant_rosをインストール
+```
+git clone https://github.com/HayatoKitaura/google_assistant.git
+```
+GoogleAssistantAPIの認証、GoogleAssistantSDKのインストールなどの初期設定が多いのでこのサイトを参考にさせていただきました。
+
+[Google Assistant をROSで使ってみる](https://qiita.com/Nenetti/items/a4c3cffd8008f328855f)
+
+
++ catkin_wsに移動してmake
+```
+catkin_make
+```
+
+#### 実行
++ RealSenseを起動
 ```
 roslaunch realsense2_camera rs_camera.launch
- ```
-・darknet_rosを起動
+```
++ Yoloを起動
 ```
 roslaunch darknet_ros detect_penlight.launch
 ```
-・CraneX7を起動
++ GoogleAssistantを有効にする
+```
+rosrun google_assistant recognition.py
+#別のタブを開く
+rosrun google_assistant publish.py
+```
+
++ google_assistant_robot.launchを起動
 ```
 roslaunch crane_x7_examples google_assistant_robot.launch
 ```
-・
++ 説明
+    - realsense-rosはRealSenseD435からの画像をpublishします。
 
-・実行
-```
-rosrun crane_x7_examples swing_object.py
-```
+    - darknet_rosはrealsense-rosからの画像をsubscribeし、物体を認識、その結果をpublishします。
 
-・説明
+    - google_assistant/recognition.pyで「ペンライトを振って」など音声を認識すると動作開始。
 
-csvファイルから各部位の角度を読み込み、順に実行します。
+    - crane_x7_examples/bbox_pos_server.pyで認識結果から物体の中心座標を計算し、クライアントからリクエストをもらうとレスポンスとしてその座標を返します。
 
-csvファイルの記入方法はset_angle.pyの記入方法と同じです。
-
-![swing_object](https://github.com/HayatoKitaura/crane_x7_ros/blob/master/crane_x7_examples/demo.gif)
-
-
+    - crane_x7_examples/detect_object_swing.pyでCraneX7の制御を行っています。上記のクライアントはこのファイル内に書かれています。
