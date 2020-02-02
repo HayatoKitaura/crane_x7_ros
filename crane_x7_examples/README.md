@@ -66,10 +66,12 @@ GoogleAssistantを使用し音声認識、RealSenseD435を使用し物体認識�
 
 モーションは[set_angle.py](https://github.com/ryuichiueda/crane_x7_ros/blob/master/crane_x7_examples/scripts/)で各部位の角度を設計し、関節の位置と回転角度を指定します。
 
+![Screenshot from 2020-02-02 22-18-46](https://user-images.githubusercontent.com/39848497/73609100-a54c9480-460d-11ea-8280-d7390307a65a.png)
 
 [スライド・期末発表](https://docs.google.com/presentation/d/1nHuU0X9NXfnAbDoUjV0XEDaFVCdB3_XfKulnwhmLkig/edit?usp=sharing)
 
 
+![Screenshot from 2020-02-02 22-19-07](https://user-images.githubusercontent.com/39848497/73609120-ddec6e00-460d-11ea-83bb-9694877d67f8.png)
 [スライド・結果報告](https://onedrive.live.com/view.aspx?resid=814F23BD7044D0DC!473&ithint=file%2cpptx&authkey=!ALmIcA6SCFlU8P0)
 
 #### 環境構築
