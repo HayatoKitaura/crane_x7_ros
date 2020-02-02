@@ -136,4 +136,4 @@ roslaunch crane_x7_examples google_assistant_robot.launch
 
     - crane_x7_examples/bbox_pos_server.pyで認識結果から物体の中心座標を計算し、クライアントからリクエストをもらうとレスポンスとしてその座標を返します。
 
-    - crane_x7_examples/detect_object_swing.pyでCraneX7の制御を行っています。上記のクライアントはこのファイル内に書かれています。
+    - crane_x7_examples/detect_object_swing.pyでCrane-X7の制御を行っています。上記のクライアントはこのファイル内に書かれています。
