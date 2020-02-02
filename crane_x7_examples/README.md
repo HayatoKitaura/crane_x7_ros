@@ -68,6 +68,8 @@ GoogleAssistantを使用し音声認識、RealSenseD435を使用し物体認識�
 
 
 [スライド・期末発表](https://docs.google.com/presentation/d/1nHuU0X9NXfnAbDoUjV0XEDaFVCdB3_XfKulnwhmLkig/edit?usp=sharing)
+
+
 [スライド・結果報告](https://onedrive.live.com/view.aspx?resid=814F23BD7044D0DC!473&ithint=file%2cpptx&authkey=!ALmIcA6SCFlU8P0)
 
 #### 環境構築
